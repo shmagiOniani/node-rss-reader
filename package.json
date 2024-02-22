@@ -1,0 +1,26 @@
+{
+  "name": "rss-reader",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shmagiOniani/node-rss-reader.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shmagiOniani/node-rss-reader/issues"
+  },
+  "homepage": "https://github.com/shmagiOniani/node-rss-reader#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "nodemailer": "^6.9.10",
+    "rss-parser": "^3.13.0",
+    "twilio": "^4.22.0"
+  }
+}
