@@ -1,9 +1,9 @@
-const express = require('express');
+const express = require("express");
 const app = express();
 const port = 4567;
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
+app.get("/", (req, res) => {
+  sendInvMail({ req, res, html });
 });
 
 app.listen(port, () => {
@@ -14,15 +14,11 @@ app.listen(port, () => {
 // let parser = new Parser();
 
 // (async () => {
-//   let feed = await parser.parseURL(
-//     ""
-//   );
+//   let feed = await parser.parseURL(process.env.RSS_FEED_URL);
 //   console.log(feed);
 
 //   feed.items.forEach((item) => {
 //     console.log(item.title + ":" + item.link);
-
-   
 
 //   });
 // })();
@@ -35,26 +31,31 @@ const nodeMailer = require("nodemailer");
 
 let html = `test html`;
 
-let transporter = nodeMailer.createTransport({
-  host: "localhost:4567",
-  port: 587,
-  secure: false,
-  auth: {
-    user: "onianishmagi@gmail.com",
-    pass: "pwd",
-  },
-});
+async function sendInvMail({ req, res, html }) {
 
-let mailOptions = {
-    from: "onianishmagi@gmail.com",
-    to: "natiaa.tabatadze@gmail.com",
+  const transport = nodeMailer.createTransport({
+    host: "mail.offer.ge",
+    port: 587,
+    secure: false,
+    auth: {
+      user: "shmagi@offer.ge",
+      pass: ";Ve^Bym.(vR2",
+    },
+  });
+  await transport.sendMail({
+    from: "shmagi@offer.ge",
+    to: "onianishmagi@gmail.com",
     subject: "New Job Alert",
     html: html,
-};
+  }).then((info) => {
+    console.log(info);
+    res.send(info);
+  })
+  
+  .catch((err) => {
+    res.send(err);
+  }
+  );
+  
 
-transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-        return console.log(error);
-    }
-    console.log('Message sent: %s', info.messageId);
-});
+}
