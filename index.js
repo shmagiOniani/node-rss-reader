@@ -1,4 +1,14 @@
+const express = require('express');
+const app = express();
+const port = 4567;
 
+app.get('/', (req, res) => {
+  res.send('Hello World!');
+});
+
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`);
+});
 
 // let Parser = require("rss-parser");
 // let parser = new Parser();
@@ -26,7 +36,7 @@ const nodeMailer = require("nodemailer");
 let html = `test html`;
 
 let transporter = nodeMailer.createTransport({
-  host: "smtp.example.com",
+  host: "localhost:4567",
   port: 587,
   secure: false,
   auth: {
