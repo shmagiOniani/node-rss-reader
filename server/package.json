@@ -18,9 +18,11 @@
   },
   "homepage": "https://github.com/shmagiOniani/node-rss-reader#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^4.18.2",
     "nodemailer": "^6.9.10",
     "rss-parser": "^3.13.0",
+    "socket.io": "^4.7.4",
     "twilio": "^4.22.0"
   }
 }
