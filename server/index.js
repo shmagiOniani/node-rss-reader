@@ -10,23 +10,7 @@
 //   console.log(`Example app listening at http://localhost:${port}`);
 // });
 
-// ---------------------------------------->
-// let Parser = require("rss-parser");
-// let parser = new Parser();
 
-// (async () => {
-//   let feed = await parser.parseURL(process.env.RSS_FEED_URL);
-//   console.log(feed);
-
-//   feed.items.forEach((item) => {
-//     console.log(item.title + ":" + item.link);
-
-//   });
-// })();
-
-// setInterval(() => {
-
-// }, 60000);
 // ---------------------------------------->
 // const nodeMailer = require("nodemailer");
 
@@ -60,65 +44,50 @@
 // }
 // ---------------------------------------->
 
-// server.js
-
-const express = require('express');
-// const http = require('http');
-// const socketIO = require('socket.io');
+const express = require("express");
 
 const app = express();
-// const server = http.createServer(app);
-// const io = socketIO(server);
-
-// const cors = require('cors');
-// app.use(cors({
-//   origin: 'http://localhost:3000' // restricts to a specific domain
-// }));
-
-// // Serve static files from the 'public' directory
-// app.use(express.static('public'));
-
-// // Socket.io connection event
-// io.on('connection', (socket) => {
-//   console.log('A user connected');
-
-//   // Listen for messages from the client
-//   socket.on('message', (data) => {
-//     console.log('Message from client:', data);
-
-//     // Broadcast the message to all connected clients
-//     io.emit('message', data);
-//   });
-
-//   // Disconnect event
-//   socket.on('disconnect', () => {
-//     console.log('User disconnected');
-//   });
-// });
-
-// // Start the server on port 3001
-// const PORT = process.env.PORT || 4018;
-// server.listen(PORT, () => {
-//   console.log(`Server running on http://localhost:${PORT}`);
-// });
-
+const http = require("http").createServer(app);
+const io = require("socket.io")(http, {
+  cors: {
+    origin: ["http://localhost:3000", "http://192.168.80.151:8083"],
+    methods: ["GET", "POST"],
+    allowedHeaders: ["my-custom-header"],
+    credentials: true,
+  },
+});
 
 // ---------------------------------------->
-const http = require('http').createServer(app)
-const io = require('socket.io')(http, {
-    cors: {
-        origin: ["http://localhost:3000", 'http://192.168.80.151:8083'],
-        methods: ["GET", "POST"],
-        allowedHeaders: ["my-custom-header"],
-        credentials: true
-    }
-})
-io.on('connection', socket => {
-    console.log("start", socket.id);
-})
+let Parser = require("rss-parser");
+let parser = new Parser();
+
+let feedsArr = [];
+
+setInterval(() => {
+  (async () => {
+  let feed = await parser.parseURL('https://www.upwork.com/ab/feed/jobs/rss?q=%28title%3A%28React%29+OR+title%3A%28Frontend%29+OR+title%3A%28Angular%29+OR+title%3A%28react%29%29&client_hires=1-9%2C10-&verified_payment_only=1&sort=recency&paging=0%3B10&api_params=1&securityToken=2b8186dc354d9557f6d72077c9daad7a629cef6605d91136a3836e4f976c7dfbd617631e91cbff4fc977dea9741343b977a274724a91bbf0af82ec6000761333&userUid=1215517476934246400&orgUid=1215517476942635009');
+
+  // feed.items.forEach((item) => {
+  //   console.log(item.title + ":" + item.link);
+  //   feedsArr.push(item.title + ":" + item.link);
+
+  // });
+  sendMessage(feed.items);
+
+})();
+}, 2000);
+
+
+setInterval(() => {
+
+}, 2000);
+
+io.on("connection", (socket) => {
+  console.log("start", socket.id);
+});
 
 function sendMessage(data) {
-    io.emit('message', data);
+  io.emit("message", data);
 }
 
 http.listen(5001, () => console.log("listening to 5001"));

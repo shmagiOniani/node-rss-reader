@@ -1,60 +1,35 @@
-import React, { useState, useEffect, useRef } from 'react';
-import io from 'socket.io-client';
-
+import React, { useState, useEffect, useRef } from "react";
+import io from "socket.io-client";
 
 function App() {
-  const [message, setMessage] = useState('');
-  // const [receivedMessage, setReceivedMessage] = useState('');
+  const socketRef = useRef();
+  const [feedsArr, setFeedsArr] = useState([]);
 
-  // // Listen for messages from the server
-  // useEffect(() => {
-  //   socket.on('message', (data) => {
-  //     setReceivedMessage(data);
-  //   });
-
-  //   // Cleanup the socket connection when the component unmounts
-  //   return () => {
-  //     socket.disconnect();
-  //   };
-  // }, []);
-
-  // // Function to send a message to the server
-  // const sendMessage = () => {
-  //   socket.emit('message', message);
-  // };
-
-// ---------------------------------------->
-
-
-
-
-  const socketRef = useRef()
   useEffect(() => {
-    socketRef.current = io.connect('http://localhost:5001')
+    socketRef.current = io.connect("http://localhost:5001");
     socketRef.current.on("message", (text) => {
-      setMessage(text)
-    })
-    return () => socketRef.current.disconnect()
-  }, [message]);
+      setFeedsArr(text);
+    });
+    return () => socketRef.current.disconnect();
+  }, []);
 
-// ---------------------------------------->
-
-
-
+  // ---------------------------------------->
 
   return (
     <div>
       <h1>Simple Node-React Socket Example</h1>
       <div>
-        <input
-          type="text"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-        />
-        <button onClick={message}>Send</button>
-      </div>
-      <div>
-        {/* <p>Received message: {rece  ivedMessage}</p> */}
+        <ol>
+          {feedsArr.map((feed) => {
+            return (
+              <li>
+                <h3>
+                  <a target="blank" href={feed.link}>{feed.title}</a>
+                </h3>
+              </li>
+            );
+          })}
+        </ol>
       </div>
     </div>
   );
