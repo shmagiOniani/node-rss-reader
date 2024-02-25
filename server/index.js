@@ -101,3 +101,24 @@ const PORT = process.env.PORT || 4018;
 server.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
 });
+
+
+// ---------------------------------------->
+const http = require('http').createServer(app)
+// const io = require('socket.io')(http, {
+//     cors: {
+//         origin: ["http://localhost:3000", 'http://192.168.80.151:8083'],
+//         methods: ["GET", "POST"],
+//         allowedHeaders: ["my-custom-header"],
+//         credentials: true
+//     }
+// })
+// io.on('connection', socket => {
+//     console.log("start", socket.id);
+// })
+
+// function sendMessage(data) {
+//     io.emit('message', data);
+// }
+
+http.listen(5001, () => console.log("listening to 5001"));

@@ -24,6 +24,26 @@ function App() {
     socket.emit('message', message);
   };
 
+// ---------------------------------------->
+
+
+
+
+// import io from "socket.io-client"
+  // const socketRef = useRef()
+  useEffect(() => {
+    // socketRef.current = io.connect(variables.production.BASE_API)
+    // socketRef.current.on("message", ({text, user, branch, timestamp}) => {
+    //   setChat([{text, user, branch, timestamp}, ...chat])
+    // })
+    // return () => socketRef.current.disconnect()
+  }, [chat]);
+
+// ---------------------------------------->
+
+
+
+
   return (
     <div>
       <h1>Simple Node-React Socket Example</h1>
