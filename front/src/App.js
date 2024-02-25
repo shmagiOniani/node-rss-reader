@@ -1,43 +1,41 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import io from 'socket.io-client';
 
-const socket = io('http://localhost:4018');
 
 function App() {
   const [message, setMessage] = useState('');
-  const [receivedMessage, setReceivedMessage] = useState('');
+  // const [receivedMessage, setReceivedMessage] = useState('');
 
-  // Listen for messages from the server
-  useEffect(() => {
-    socket.on('message', (data) => {
-      setReceivedMessage(data);
-    });
+  // // Listen for messages from the server
+  // useEffect(() => {
+  //   socket.on('message', (data) => {
+  //     setReceivedMessage(data);
+  //   });
 
-    // Cleanup the socket connection when the component unmounts
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
+  //   // Cleanup the socket connection when the component unmounts
+  //   return () => {
+  //     socket.disconnect();
+  //   };
+  // }, []);
 
-  // Function to send a message to the server
-  const sendMessage = () => {
-    socket.emit('message', message);
-  };
+  // // Function to send a message to the server
+  // const sendMessage = () => {
+  //   socket.emit('message', message);
+  // };
 
 // ---------------------------------------->
 
 
 
 
-// import io from "socket.io-client"
-  // const socketRef = useRef()
+  const socketRef = useRef()
   useEffect(() => {
-    // socketRef.current = io.connect(variables.production.BASE_API)
-    // socketRef.current.on("message", ({text, user, branch, timestamp}) => {
-    //   setChat([{text, user, branch, timestamp}, ...chat])
-    // })
-    // return () => socketRef.current.disconnect()
-  }, [chat]);
+    socketRef.current = io.connect('http://localhost:5001')
+    socketRef.current.on("message", (text) => {
+      setMessage(text)
+    })
+    return () => socketRef.current.disconnect()
+  }, [message]);
 
 // ---------------------------------------->
 
@@ -53,10 +51,10 @@ function App() {
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
-        <button onClick={sendMessage}>Send</button>
+        <button onClick={message}>Send</button>
       </div>
       <div>
-        <p>Received message: {receivedMessage}</p>
+        {/* <p>Received message: {rece  ivedMessage}</p> */}
       </div>
     </div>
   );

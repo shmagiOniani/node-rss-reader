@@ -63,62 +63,62 @@
 // server.js
 
 const express = require('express');
-const http = require('http');
-const socketIO = require('socket.io');
+// const http = require('http');
+// const socketIO = require('socket.io');
 
 const app = express();
-const server = http.createServer(app);
-const io = socketIO(server);
+// const server = http.createServer(app);
+// const io = socketIO(server);
 
-const cors = require('cors');
-app.use(cors({
-  origin: 'http://localhost:3000' // restricts to a specific domain
-}));
+// const cors = require('cors');
+// app.use(cors({
+//   origin: 'http://localhost:3000' // restricts to a specific domain
+// }));
 
-// Serve static files from the 'public' directory
-app.use(express.static('public'));
+// // Serve static files from the 'public' directory
+// app.use(express.static('public'));
 
-// Socket.io connection event
-io.on('connection', (socket) => {
-  console.log('A user connected');
+// // Socket.io connection event
+// io.on('connection', (socket) => {
+//   console.log('A user connected');
 
-  // Listen for messages from the client
-  socket.on('message', (data) => {
-    console.log('Message from client:', data);
+//   // Listen for messages from the client
+//   socket.on('message', (data) => {
+//     console.log('Message from client:', data);
 
-    // Broadcast the message to all connected clients
-    io.emit('message', data);
-  });
+//     // Broadcast the message to all connected clients
+//     io.emit('message', data);
+//   });
 
-  // Disconnect event
-  socket.on('disconnect', () => {
-    console.log('User disconnected');
-  });
-});
+//   // Disconnect event
+//   socket.on('disconnect', () => {
+//     console.log('User disconnected');
+//   });
+// });
 
-// Start the server on port 3001
-const PORT = process.env.PORT || 4018;
-server.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+// // Start the server on port 3001
+// const PORT = process.env.PORT || 4018;
+// server.listen(PORT, () => {
+//   console.log(`Server running on http://localhost:${PORT}`);
+// });
 
 
 // ---------------------------------------->
 const http = require('http').createServer(app)
-// const io = require('socket.io')(http, {
-//     cors: {
-//         origin: ["http://localhost:3000", 'http://192.168.80.151:8083'],
-//         methods: ["GET", "POST"],
-//         allowedHeaders: ["my-custom-header"],
-//         credentials: true
-//     }
-// })
-// io.on('connection', socket => {
-//     console.log("start", socket.id);
-// })
+const io = require('socket.io')(http, {
+    cors: {
+        origin: ["http://localhost:3000", 'http://192.168.80.151:8083'],
+        methods: ["GET", "POST"],
+        allowedHeaders: ["my-custom-header"],
+        credentials: true
+    }
+})
+io.on('connection', socket => {
+    console.log("start", socket.id);
+})
 
-// function sendMessage(data) {
-//     io.emit('message', data);
-// }
+function sendMessage(data) {
+    io.emit('message', data);
+}
 
 http.listen(5001, () => console.log("listening to 5001"));
