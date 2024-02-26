@@ -36,9 +36,18 @@ function App() {
       {showFeeds && <Feeds />}
 
       <div>
-        <button onClick={notificationPermission ? ()=> showNotification() : ()=>requestNotificationPermission()}>Show Notification</button>
+        <button
+          onClick={
+            notificationPermission
+              ? () => showNotification()
+              : () => requestNotificationPermission()
+          }
+        >
+          Show Notification
+        </button>
         {notification && <p>Notification Sent</p>}
       </div>
+
     </div>
   );
 }
