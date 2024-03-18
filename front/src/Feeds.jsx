@@ -36,16 +36,16 @@ function Feeds() {
       //   return moment(feed.isoDate).isAfter(dateTenMinEarlier);
       // });
 
-      let filteredFirstFeeds = [...feeds.firstOne];
+      // let filteredFirstFeeds = [...feeds.firstOne];
 
-      if (!moment(filteredFirstFeeds[0].isoDate).isSame(firstFirstElementDate)) {
-        firstFirstElementDate = filteredFirstFeeds[0].isoDate;
-        setFirstFeedsArr((prev) => [...filteredFirstFeeds]);
-        showNotification(
-          filteredFirstFeeds[0].title,
-          filteredFirstFeeds[0].contentSnippet
-        );
-      }
+      // if (!moment(filteredFirstFeeds[0].isoDate).isSame(firstFirstElementDate)) {
+      //   firstFirstElementDate = filteredFirstFeeds[0].isoDate;
+      //   setFirstFeedsArr((prev) => [...filteredFirstFeeds]);
+      //   showNotification(
+      //     filteredFirstFeeds[0].title,
+      //     filteredFirstFeeds[0].contentSnippet
+      //   );
+      // }
 
       let filteredSecondFeeds = [...feeds.secondOne];
 
