@@ -4,9 +4,11 @@ import moment from "moment";
 
 function Feeds() {
   const socketRef = useRef();
-  const [feedsArr, setFeedsArr] = useState([]);
+  const [firstFeedsArr, setFirstFeedsArr] = useState([]);
+  const [secondFeedsArr, setSecondFeedsArr] = useState([]);
 
-  let firstElementDate = '';
+  let firstFirstElementDate = "";
+  let firstSecondElementDate = "";
 
   const EARLY_THEN_DATE = 30;
   const SOCKET_SERVER_URL = "http://localhost:5001";
@@ -24,28 +26,37 @@ function Feeds() {
   const socketRelationship = () => {
     socketRef.current = io.connect(SOCKET_SERVER_URL);
     socketRef.current.on("message", (feeds) => {
-      
       let newDate = new Date().toISOString();
-        let dateTenMinEarlier = moment(newDate).subtract(
-          EARLY_THEN_DATE,
-          "minutes"
+      let dateTenMinEarlier = moment(newDate).subtract(
+        EARLY_THEN_DATE,
+        "minutes"
+      );
+
+      // let filteredFeeds = feeds.filter((feed) => {
+      //   return moment(feed.isoDate).isAfter(dateTenMinEarlier);
+      // });
+
+      let filteredFirstFeeds = [...feeds.firstOne];
+
+      if (!moment(filteredFirstFeeds[0].isoDate).isSame(firstFirstElementDate)) {
+        firstFirstElementDate = filteredFirstFeeds[0].isoDate;
+        setFirstFeedsArr((prev) => [...filteredFirstFeeds]);
+        showNotification(
+          filteredFirstFeeds[0].title,
+          filteredFirstFeeds[0].contentSnippet
         );
+      }
 
+      let filteredSecondFeeds = [...feeds.secondOne];
 
-
-        let filteredFeeds = feeds.filter((feed) => {
-          return moment(feed.isoDate).isAfter(dateTenMinEarlier);
-        });
-
-        console.log(moment(feeds[0].isoDate).isSame(feedsArr[0]?.isoDate));
-        
-        console.log(feeds[0].isoDate);
-        console.log(feedsArr[0]?.isoDate);
-        console.log(feedsArr);
-        if (!moment(feeds[0].isoDate).isSame(firstElementDate)) {
-          firstElementDate = feeds[0].isoDate;
-          setFeedsArr((prev)=> [...filteredFeeds]);
-          showNotification(feeds[0].title, feeds[0].contentSnippet);
+      if (!moment(filteredSecondFeeds[0].isoDate).isSame(firstSecondElementDate)) {
+        console.log(moment(filteredSecondFeeds[0].isoDate).isSame(firstSecondElementDate), firstSecondElementDate, "------->", filteredSecondFeeds[0].isoDate);
+        firstSecondElementDate = filteredSecondFeeds[0].isoDate;
+        setSecondFeedsArr((prev) => [...filteredSecondFeeds]);
+        showNotification(
+          filteredSecondFeeds[0].title,
+          filteredSecondFeeds[0].contentSnippet
+        );
       }
     });
   };
@@ -54,16 +65,30 @@ function Feeds() {
     socketRelationship();
 
     return () => socketRef.current.disconnect();
-  },[]);
+  }, []);
 
   return (
     <div>
       <h1>Feeds List</h1>
-      <div>
+      <div style={{display: "flex"}}>
         <ol>
-          {feedsArr.map((feed) => {
+          {firstFeedsArr.map((feed) => {
             return (
-              <li key={feed.isoDate}>
+              <li key={feed.guid}>
+                <h3>
+                  <a target="blank" href={feed.link}>
+                    {feed.title}
+                  </a>
+                  {moment(feed.isoDate).fromNow()}
+                </h3>
+              </li>
+            );
+          })}
+        </ol>
+        <ol>
+          {secondFeedsArr.map((feed) => {
+            return (
+              <li key={feed.guid}>
                 <h3>
                   <a target="blank" href={feed.link}>
                     {feed.title}
